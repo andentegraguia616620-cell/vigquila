@@ -8,47 +8,39 @@
 <style>
 
 body{
-
 background:black;
 color:#00ff00;
 font-family:monospace;
+height:100vh;
+margin:0;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
-margin:0;
-font-size:20px;
-
+overflow:hidden;
 }
 
 #screen{
-
 width:80%;
-max-width:700px;
-
+max-width:800px;
+font-size:22px;
 }
 
 .red{
-
 color:red;
-
 }
 
 .glitch{
-
-animation:glitch 0.2s infinite;
-
+animation:glitch 0.15s infinite;
 }
-
 
 @keyframes glitch{
 
 0%{
-transform:translate(2px,0);
+transform:translate(3px,0);
 }
 
 50%{
-transform:translate(-2px,0);
+transform:translate(-3px,2px);
 }
 
 100%{
@@ -57,68 +49,49 @@ transform:translate(0,0);
 
 }
 
+button{
 
-#bar{
-
-margin-top:20px;
+background:black;
+color:#00ff00;
+border:1px solid #00ff00;
+padding:10px;
+font-family:monospace;
 
 }
-
 
 </style>
 
 </head>
 
 
-
 <body>
 
 
-<div id="screen">
-
-</div>
+<div id="screen"></div>
 
 
 
 <script>
 
 
-let screen =
+const screen =
 document.getElementById("screen");
 
 
 
-function typeText(text,speed=40){
+function wait(ms){
 
-
-return new Promise(resolve=>{
-
-
-let i=0;
-
-
-let timer=setInterval(()=>{
-
-
-screen.innerHTML += text[i];
-
-i++;
-
-
-if(i>=text.length){
-
-clearInterval(timer);
-
-resolve();
+return new Promise(resolve =>
+setTimeout(resolve,ms)
+);
 
 }
 
 
-},speed);
 
+function clearScreen(){
 
-});
-
+screen.innerHTML="";
 
 }
 
@@ -126,27 +99,47 @@ resolve();
 
 function beep(){
 
+let ctx = new AudioContext();
 
-let ctx=new AudioContext();
+let osc = ctx.createOscillator();
 
-let osc=ctx.createOscillator();
-
-
-osc.frequency.value=500;
-
+osc.frequency.value = 600;
 
 osc.connect(ctx.destination);
 
-
 osc.start();
-
 
 setTimeout(()=>{
 
 osc.stop();
 
-},100);
+},120);
 
+}
+
+
+
+async function typeText(text,speed=35){
+
+for(let i=0;i<text.length;i++){
+
+screen.innerHTML += text[i];
+
+await wait(speed);
+
+}
+
+}
+
+
+
+async function blackout(){
+
+await wait(2000);
+
+clearScreen();
+
+await wait(1000);
 
 }
 
@@ -157,137 +150,160 @@ async function start(){
 
 
 
+// Scene 1
+
 await typeText(
-"MS-DOS TERMINAL<br><br>"
+"MS-DOS TERMINAL\n\n"
+);
+
+await typeText(
+"C:\\EXPERIMENT\\FINAL>\n\n"
+);
+
+await typeText(
+"Loading...\n\n"
 );
 
 
 await typeText(
-"C:\\EXPERIMENT\\FINAL><br><br>"
+"DATA RESTORED"
 );
 
 
+
+await blackout();
+
+
+
+// Scene 2
+
+screen.innerHTML =
+"<span class='red glitch'>FINAL TEST COMPLETE</span>";
+
+
+await wait(4000);
+
+
+await blackout();
+
+
+
+// Scene 3
 
 await typeText(
-"Initializing system...<br>"
+"YOU ARE QUALIFIED.\n\n"
 );
-
 
 await typeText(
-"Memory check : OK<br>"
+"BUT REMEMBER...\n\n"
 );
-
 
 await typeText(
-"Security check : OK<br><br>"
+"YOU WERE NOT THE ONLY ONE BEING TESTED."
 );
 
 
+
+await blackout();
+
+
+
+// Scene 4
 
 await typeText(
-"Downloading hidden_data...<br><br>"
+"SUBJECT DATABASE\n\n"
+);
+
+await typeText(
+"SUBJECT 001 : PASSED\n"
+);
+
+await typeText(
+"SUBJECT 002 : UNKNOWN\n"
+);
+
+await typeText(
+"SUBJECT 003 : FAILED\n"
+);
+
+await typeText(
+"SUBJECT 004 : UNKNOWN\n"
+);
+
+await typeText(
+"SUBJECT 005 : LOCKED\n\n"
 );
 
 
 
-let bar="";
+let detail =
+document.createElement("button");
 
 
-for(let i=0;i<=10;i++){
+detail.innerHTML="DETAIL";
 
 
-bar+="█";
+detail.onclick=function(){
 
 
-screen.innerHTML +=
-"["+
-bar+
-"----------".slice(i)+
-"] "+
-(i*10)+"%<br>";
+screen.innerHTML =
+"SUBJECT 002\n\n"+
+"STATUS : UNKNOWN\n\n"+
+"LAST SIGNAL:\n"+
+"HELP\n\n"+
+"DATA CORRUPTED";
 
+
+};
+
+
+
+screen.appendChild(detail);
+
+
+
+await wait(8000);
+
+
+await blackout();
+
+
+
+// Scene 5
+
+screen.innerHTML =
+"<span class='red'>ALL PREVIOUS DATA WILL BE PERMANENTLY DELETED.</span>";
+
+
+
+await wait(2000);
+
+
+
+// countdown
+
+for(let i=5;i>=1;i--){
+
+screen.innerHTML =
+"<span class='red'>"+i+"</span>";
 
 beep();
 
-
-await new Promise(r=>setTimeout(r,300));
-
+await wait(1000);
 
 }
 
 
 
-await typeText(
-"<br>DATA RESTORED.<br><br>"
-);
+// Scene 6
 
 
-
-await typeText(
-"FILE FOUND : FINAL_MESSAGE.txt<br><br>"
-);
-
-
-
-screen.innerHTML +=
-"<span class='red'>WARNING</span><br><br>";
-
-
-
-await new Promise(r=>setTimeout(r,1000));
-
-
-
-screen.innerHTML +=
-"<div class='glitch'>";
+clearScreen();
 
 
 await typeText(
-"FINAL TEST COMPLETE<br><br>"
+"CONNECTION TERMINATED.\n\n"
 );
-
-
-
-await typeText(
-"YOU ARE QUALIFIED.<br><br>"
-);
-
-
-
-await typeText(
-"BUT REMEMBER...<br><br>"
-);
-
-
-
-await typeText(
-"YOU WERE NOT THE ONLY ONE BEING TESTED.<br><br>"
-);
-
-
-
-await typeText(
-"SUBJECT 001 : PASSED<br>"
-);
-
-
-
-await typeText(
-"SUBJECT 002 : UNKNOWN<br><br>"
-);
-
-
-
-await typeText(
-"ALL PREVIOUS DATA WILL BE PERMANENTLY DELETED.<br><br>"
-);
-
-
-
-await typeText(
-"CONNECTION TERMINATED.<br>"
-);
-
 
 
 await typeText(
@@ -295,6 +311,24 @@ await typeText(
 );
 
 
+
+await wait(3000);
+
+
+// blackout
+
+document.body.style.transition="2s";
+
+screen.style.opacity="0";
+
+
+
+await wait(3000);
+
+
+// fake shutdown
+
+location.href="final_error.html";
 
 }
 
