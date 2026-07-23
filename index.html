@@ -53,3 +53,23 @@ function playMorse(){＋
   }
 }
 </script>
+<div class="login">
+  <p>ENTER PASSWORD</p>
+  <input id="pass" type="password">
+  <button onclick="check()">ACCESS</button>
+  <p id="result"></p>
+</div>
+
+<script>
+function check(){
+  let password = document.getElementById("pass").value;
+
+  if(password === "VIGQUILA"){
+    document.getElementById("result").innerHTML =
+    "ACCESS GRANTED<br>The gate has opened.";
+  }else{
+    document.getElementById("result").innerHTML =
+    "ACCESS DENIED";
+  }
+}
+</script>
