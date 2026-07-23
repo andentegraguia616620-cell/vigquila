@@ -1,23 +1,197 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <title>Gate 2</title>
+
+
 <style>
+
+
 body{
+
 background:black;
+
 color:#00ff00;
+
 font-family:monospace;
+
 display:flex;
+
 justify-content:center;
+
 align-items:center;
+
 height:100vh;
+
+margin:0;
+
+font-size:20px;
+
 }
+
+
+.box{
+
+text-align:center;
+
+}
+
+
+.binary{
+
+font-size:16px;
+
+line-height:1.8;
+
+margin:20px;
+
+}
+
+
+input,button{
+
+background:black;
+
+color:#00ff00;
+
+border:1px solid #00ff00;
+
+padding:10px;
+
+font-family:monospace;
+
+}
+
+
+button:hover{
+
+background:#00ff00;
+
+color:black;
+
+}
+
+
+#result{
+
+margin-top:15px;
+
+}
+
+
 </style>
+
+
 </head>
 
+
+
 <body>
-EXPERIMENT-001<br>
-The second gate has opened.
+
+
+<div class="box">
+
+
+EXPERIMENT-001
+
+<br><br>
+
+
+SECOND GATE
+
+<br><br>
+
+
+SYSTEM MESSAGE:
+
+<br>
+
+DECODE THE FOLLOWING SIGNAL
+
+
+
+<div class="binary">
+
+
+01000101 01001110 01010100 01000101
+
+<br>
+
+01010010 00100000 01010100 01001000 01000101
+
+<br>
+
+01001110 01000101 01011000 01010100
+
+<br>
+
+01000111 01000001 01010100 01000101
+
+
+</div>
+
+
+
+ENTER DECODE PASSWORD
+
+
+<br><br>
+
+
+<input id="answer" type="text">
+
+
+<button onclick="checkAnswer()">
+
+SUBMIT
+
+</button>
+
+
+<p id="result"></p>
+
+
+</div>
+
+
+
+
+<script>
+
+
+function checkAnswer(){
+
+
+let answer =
+document.getElementById("answer").value;
+
+
+
+if(answer.toUpperCase()=="ENTER THE NEXT GATE"){
+
+
+location.href="gate3.html";
+
+
+}else{
+
+
+document.getElementById("result").innerHTML=
+
+"ACCESS DENIED";
+
+
+}
+
+
+}
+
+
+</script>
+
+
 </body>
 
 </html>
