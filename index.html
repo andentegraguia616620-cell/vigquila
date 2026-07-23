@@ -21,3 +21,31 @@ ACCESS GRANTED<br><br>
 The first gate has opened.
 </body>
 </html>
+<div class="login">
+<p>ENTER PASSWORD</p>
+
+<input id="pass" type="password">
+<button onclick="check()">ACCESS</button>
+
+<p id="result"></p>
+</div>
+
+
+<script>
+function check(){
+
+let password = document.getElementById("pass").value;
+
+if(password === "VIGQUILA"){
+
+location.href = "gate2.html";
+
+}else{
+
+document.getElementById("result").innerHTML =
+"ACCESS DENIED";
+
+}
+
+}
+</script>
