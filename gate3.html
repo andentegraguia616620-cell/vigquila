@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -8,7 +9,6 @@
 <style>
 
 body{
-
 background:black;
 color:#00ff00;
 font-family:monospace;
@@ -18,92 +18,58 @@ display:flex;
 justify-content:center;
 align-items:center;
 overflow:hidden;
-
 }
 
 
 #screen{
-
 width:80%;
 max-width:900px;
 font-size:22px;
 white-space:pre-line;
-
 }
 
 
 .left{
-
 text-align:left;
-
 }
 
 
 .center{
-
 text-align:center;
-
 }
 
 
 .red{
-
 color:red;
-
 }
 
 
-/* 画面揺れ */
-
 .shake{
-
 animation:shake 0.15s;
-
 }
 
 
 @keyframes shake{
 
-0%{
-transform:translate(0,0);
-}
-
-25%{
-transform:translate(8px,-3px);
-}
-
-50%{
-transform:translate(-8px,3px);
-}
-
-75%{
-transform:translate(5px,2px);
-}
-
-100%{
-transform:translate(0,0);
-}
+0%{transform:translate(0,0);}
+25%{transform:translate(8px,-3px);}
+50%{transform:translate(-8px,3px);}
+75%{transform:translate(5px,2px);}
+100%{transform:translate(0,0);}
 
 }
 
-
-
-/* glitch background */
 
 .glitch-bg::before{
 
 content:"";
-
 position:fixed;
-
 top:0;
 left:0;
-
 width:100%;
 height:100%;
 
 background:
-
 linear-gradient(
 90deg,
 transparent,
@@ -111,73 +77,32 @@ rgba(0,255,0,0.15),
 transparent
 );
 
-
 animation:glitchMove 0.1s infinite;
-
 pointer-events:none;
 
 }
 
 
-
 @keyframes glitchMove{
 
-
-0%{
-
-transform:translate(0);
-
-}
-
-
-25%{
-
-transform:translate(-10px,3px);
+0%{transform:translate(0);}
+25%{transform:translate(-10px,3px);}
+50%{transform:translate(8px,-2px);}
+75%{transform:translate(-5px,5px);}
+100%{transform:translate(0);}
 
 }
-
-
-50%{
-
-transform:translate(8px,-2px);
-
-}
-
-
-75%{
-
-transform:translate(-5px,5px);
-
-}
-
-
-100%{
-
-transform:translate(0);
-
-}
-
-
-}
-
-
 
 
 button{
 
 background:black;
-
 color:#00ff00;
-
 border:1px solid #00ff00;
-
 padding:10px;
-
 font-family:monospace;
 
 }
-
-
 
 </style>
 
@@ -188,7 +113,6 @@ font-family:monospace;
 
 
 <div id="screen" class="left"></div>
-
 
 
 <script>
@@ -202,13 +126,10 @@ document.getElementById("screen");
 function wait(ms){
 
 return new Promise(resolve=>{
-
 setTimeout(resolve,ms);
-
 });
 
 }
-
 
 
 
@@ -234,6 +155,19 @@ await wait(speed);
 
 
 
+async function typeLines(lines,speed=120){
+
+for(let line of lines){
+
+screen.textContent += line+"\n";
+
+await wait(speed);
+
+}
+
+}
+
+
 
 function beep(){
 
@@ -241,11 +175,9 @@ let ctx=new AudioContext();
 
 let osc=ctx.createOscillator();
 
-
 osc.type="square";
 
 osc.frequency.value=600;
-
 
 osc.connect(ctx.destination);
 
@@ -262,7 +194,6 @@ osc.stop();
 
 
 
-
 let audioCtx;
 
 
@@ -270,32 +201,26 @@ function glitchSound(){
 
 if(!audioCtx){
 
-audioCtx = new AudioContext();
+audioCtx=new AudioContext();
 
 }
 
 
-let count = 0;
+let count=0;
 
 
-let timer = setInterval(()=>{
+let timer=setInterval(()=>{
 
 
-let osc = audioCtx.createOscillator();
-
+let osc=audioCtx.createOscillator();
 
 osc.type="square";
 
-
-osc.frequency.value =
-Math.random()*500+100;
-
+osc.frequency.value=Math.random()*500+100;
 
 osc.connect(audioCtx.destination);
 
-
 osc.start();
-
 
 
 setTimeout(()=>{
@@ -303,7 +228,6 @@ setTimeout(()=>{
 osc.stop();
 
 },60);
-
 
 
 count++;
@@ -317,68 +241,6 @@ clearInterval(timer);
 
 
 },80);
-
-}
-  
-
-
-let ctx=new AudioContext();
-
-
-let osc=ctx.createOscillator();
-
-
-osc.type="square";
-
-
-osc.frequency.value=
-Math.random()*300+80;
-
-
-osc.connect(ctx.destination);
-
-
-osc.start();
-
-
-
-setTimeout(()=>{
-
-osc.stop();
-
-},50);
-
-
-
-count++;
-
-
-if(count>=8){
-
-clearInterval(timer);
-
-}
-
-
-},120);
-
-
-}
-
-
-
-
-function shake(){
-
-document.body.classList.add("shake");
-
-
-setTimeout(()=>{
-
-document.body.classList.remove("shake");
-
-},150);
-
 
 }
 
@@ -395,9 +257,22 @@ document.body.classList.remove("glitch-bg");
 
 },500);
 
-
 }
 
+
+
+function shake(){
+
+document.body.classList.add("shake");
+
+
+setTimeout(()=>{
+
+document.body.classList.remove("shake");
+
+},150);
+
+}
 
 
 
@@ -405,18 +280,9 @@ function blackout(){
 
 return new Promise(resolve=>{
 
-
-setTimeout(()=>{
-
-
 clearScreen();
 
-
-setTimeout(resolve,1000);
-
-
-},2000);
-
+setTimeout(resolve,1500);
 
 });
 
@@ -424,21 +290,16 @@ setTimeout(resolve,1000);
 
 
 
-
-
 async function start(){
 
 
+screen.className="left";
 
-// =================
+
+// ここからPart A-2へ続く
+  // =================
 // SCENE 1
 // =================
-
-
-await typeText(
-"MS-DOS TERMINAL\n\n"
-);
-
 
 
 await typeText(
@@ -446,17 +307,14 @@ await typeText(
 );
 
 
-
 await typeText(
 "Initializing system...\n\n"
 );
 
 
-
 await typeText(
 "Memory check : OK\n"
 );
-
 
 
 await typeText(
@@ -465,31 +323,79 @@ await typeText(
 
 
 
+screen.className="left";
+
+
+
+await typeLines([
+
+"C:\\EXPERIMENT\\FINAL> tree",
+
+"",
+
+"EXPERIMENT",
+
+"│",
+
+"├── SYSTEM",
+
+"│   ├── core.exe",
+
+"│   └── security.dat",
+
+"│",
+
+"├── SUBJECT",
+
+"│   ├── subject001.dat",
+
+"│   ├── subject002.dat",
+
+"│   └── subject003.dat",
+
+"│",
+
+"└── hidden_data [LOCKED]"
+
+
+],200);
+
+
+
+await wait(3000);
+
+
+
+// 黒画面
+
+clearScreen();
+
+await wait(2000);
+
+
+
+screen.className="center";
+
+
 await typeText(
-"C:\\EXPERIMENT\\FINAL> tree\n\n"
+"C:\\EXPERIMENT\\FINAL> access hidden_data\n\n"
 );
 
 
 
-await typeText(
-"EXPERIMENT\n"+
-"│\n"+
-"├── SYSTEM\n"+
-"│   ├── core.exe\n"+
-"│   └── security.dat\n"+
-"│\n"+
-"├── SUBJECT\n"+
-"│   ├── subject001.dat\n"+
-"│   ├── subject002.dat\n"+
-"│   └── subject003.dat\n"+
-"│\n"+
-"└── hidden_data [LOCKED]\n\n"
-);
+await wait(1200);
 
 
+
+// 黒画面
+
+clearScreen();
 
 await wait(1500);
 
+
+
+screen.className="center";
 
 
 await typeText(
@@ -497,6 +403,8 @@ await typeText(
 );
 
 
+
+// ダウンロードバー
 
 for(let i=10;i<=100;i+=10){
 
