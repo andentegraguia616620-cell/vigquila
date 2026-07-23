@@ -263,13 +263,63 @@ osc.stop();
 
 
 
+let audioCtx;
+
+
 function glitchSound(){
 
+if(!audioCtx){
 
-let count=0;
+audioCtx = new AudioContext();
+
+}
 
 
-let timer=setInterval(()=>{
+let count = 0;
+
+
+let timer = setInterval(()=>{
+
+
+let osc = audioCtx.createOscillator();
+
+
+osc.type="square";
+
+
+osc.frequency.value =
+Math.random()*500+100;
+
+
+osc.connect(audioCtx.destination);
+
+
+osc.start();
+
+
+
+setTimeout(()=>{
+
+osc.stop();
+
+},60);
+
+
+
+count++;
+
+
+if(count>=12){
+
+clearInterval(timer);
+
+}
+
+
+},80);
+
+}
+  
 
 
 let ctx=new AudioContext();
