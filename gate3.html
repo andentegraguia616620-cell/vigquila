@@ -3,59 +3,28 @@
 
 <head>
 
-<title>Final Gate</title>
+<title>Gate 3 Scene 1</title>
 
 <style>
 
 body{
+
 background:black;
 color:#00ff00;
 font-family:monospace;
 height:100vh;
 margin:0;
+
 display:flex;
-justify-content:center;
 align-items:center;
-overflow:hidden;
+justify-content:center;
+
 }
 
 #screen{
+
 width:80%;
-max-width:800px;
 font-size:22px;
-}
-
-.red{
-color:red;
-}
-
-.glitch{
-animation:glitch 0.15s infinite;
-}
-
-@keyframes glitch{
-
-0%{
-transform:translate(3px,0);
-}
-
-50%{
-transform:translate(-3px,2px);
-}
-
-100%{
-transform:translate(0,0);
-}
-
-}
-
-button{
-
-background:black;
-color:#00ff00;
-border:1px solid #00ff00;
-padding:10px;
-font-family:monospace;
 
 }
 
@@ -81,84 +50,70 @@ document.getElementById("screen");
 
 function wait(ms){
 
-return new Promise(resolve =>
-setTimeout(resolve,ms)
-);
+return new Promise(resolve=>{
+setTimeout(resolve,ms);
+});
 
 }
 
 
 
-function clearScreen(){
+async function typeText(text,speed=50){
 
-screen.innerHTML="";
-
-}
-
-
-
-function beep(){
-
-let ctx = new AudioContext();
-
-let osc = ctx.createOscillator();
-
-osc.frequency.value = 600;
-
-osc.connect(ctx.destination);
-
-osc.start();
-
-setTimeout(()=>{
-
-osc.stop();
-
-},120);
-
-}
-
-
-
-async function typeText(text,speed=35){
 
 for(let i=0;i<text.length;i++){
 
+
+if(text[i]=="\n"){
+
+screen.innerHTML += "<br>";
+
+}
+
+else{
+
 screen.innerHTML += text[i];
+
+}
+
 
 await wait(speed);
 
-}
 
 }
 
 
-
-async function blackout(){
-
-await wait(2000);
-
-clearScreen();
-
-await wait(1000);
-
 }
-
 
 
 
 async function start(){
 
 
-
-// Scene 1
-
 await typeText(
 "MS-DOS TERMINAL\n\n"
 );
 
+
 await typeText(
 "C:\\EXPERIMENT\\FINAL>\n\n"
 );
+
+
+await typeText(
+"Initializing system...\n"
+);
+
+
+await typeText(
+"Memory check : OK\n"
+);
+
+
+await typeText(
+"Security check : OK\n\n"
+);
+
 
 await typeText(
 "Loading...\n\n"
@@ -170,165 +125,6 @@ await typeText(
 );
 
 
-
-await blackout();
-
-
-
-// Scene 2
-
-screen.innerHTML =
-"<span class='red glitch'>FINAL TEST COMPLETE</span>";
-
-
-await wait(4000);
-
-
-await blackout();
-
-
-
-// Scene 3
-
-await typeText(
-"YOU ARE QUALIFIED.\n\n"
-);
-
-await typeText(
-"BUT REMEMBER...\n\n"
-);
-
-await typeText(
-"YOU WERE NOT THE ONLY ONE BEING TESTED."
-);
-
-
-
-await blackout();
-
-
-
-// Scene 4
-
-await typeText(
-"SUBJECT DATABASE\n\n"
-);
-
-await typeText(
-"SUBJECT 001 : PASSED\n"
-);
-
-await typeText(
-"SUBJECT 002 : UNKNOWN\n"
-);
-
-await typeText(
-"SUBJECT 003 : FAILED\n"
-);
-
-await typeText(
-"SUBJECT 004 : UNKNOWN\n"
-);
-
-await typeText(
-"SUBJECT 005 : LOCKED\n\n"
-);
-
-
-
-let detail =
-document.createElement("button");
-
-
-detail.innerHTML="DETAIL";
-
-
-detail.onclick=function(){
-
-
-screen.innerHTML =
-"SUBJECT 002\n\n"+
-"STATUS : UNKNOWN\n\n"+
-"LAST SIGNAL:\n"+
-"HELP\n\n"+
-"DATA CORRUPTED";
-
-
-};
-
-
-
-screen.appendChild(detail);
-
-
-
-await wait(8000);
-
-
-await blackout();
-
-
-
-// Scene 5
-
-screen.innerHTML =
-"<span class='red'>ALL PREVIOUS DATA WILL BE PERMANENTLY DELETED.</span>";
-
-
-
-await wait(2000);
-
-
-
-// countdown
-
-for(let i=5;i>=1;i--){
-
-screen.innerHTML =
-"<span class='red'>"+i+"</span>";
-
-beep();
-
-await wait(1000);
-
-}
-
-
-
-// Scene 6
-
-
-clearScreen();
-
-
-await typeText(
-"CONNECTION TERMINATED.\n\n"
-);
-
-
-await typeText(
-"SYSTEM OFFLINE."
-);
-
-
-
-await wait(3000);
-
-
-// blackout
-
-document.body.style.transition="2s";
-
-screen.style.opacity="0";
-
-
-
-await wait(3000);
-
-
-// fake shutdown
-
-location.href="final_error.html";
 
 }
 
