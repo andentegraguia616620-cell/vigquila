@@ -3,7 +3,7 @@
 
 <head>
 
-<title>Final Gate</title>
+<title>FINAL EXPERIMENT</title>
 
 <style>
 
@@ -19,18 +19,21 @@ align-items:center;
 overflow:hidden;
 }
 
+
 #screen{
 width:80%;
-max-width:800px;
+max-width:900px;
 font-size:22px;
+white-space:pre-line;
 }
+
 
 .red{
 color:red;
 }
 
 
-.glitch-screen{
+.glitch{
 animation:shake 0.15s;
 }
 
@@ -70,8 +73,6 @@ font-family:monospace;
 
 }
 
-
-
 </style>
 
 </head>
@@ -81,7 +82,6 @@ font-family:monospace;
 
 
 <div id="screen"></div>
-
 
 
 <script>
@@ -95,7 +95,9 @@ document.getElementById("screen");
 function wait(ms){
 
 return new Promise(resolve=>{
+
 setTimeout(resolve,ms);
+
 });
 
 }
@@ -104,7 +106,7 @@ setTimeout(resolve,ms);
 
 function clearScreen(){
 
-screen.innerHTML="";
+screen.textContent="";
 
 }
 
@@ -133,37 +135,11 @@ osc.stop();
 
 
 
-
-function glitch(){
-
-document.body.classList.add("glitch-screen");
-
-setTimeout(()=>{
-
-document.body.classList.remove("glitch-screen");
-
-},150);
-
-}
-
-
-
-
 async function typeText(text,speed=35){
 
 for(let i=0;i<text.length;i++){
 
-if(text[i]=="\n"){
-
-screen.innerHTML+="<br>";
-
-}
-
-else{
-
-screen.innerHTML+=text[i];
-
-}
+screen.textContent += text[i];
 
 await wait(speed);
 
@@ -185,51 +161,139 @@ await wait(1000);
 
 
 
+function glitch(){
+
+document.body.classList.add("glitch");
+
+
+setTimeout(()=>{
+
+document.body.classList.remove("glitch");
+
+},150);
+
+}
+
+
+
+
 async function start(){
 
 
 
-// Scene 1
+// =================
+// SCENE 1
+// =================
+
 
 await typeText(
 "MS-DOS TERMINAL\n\n"
 );
 
+
 await typeText(
 "C:\\EXPERIMENT\\FINAL>\n\n"
 );
 
+
 await typeText(
-"Initializing system...\n"
+"Initializing system...\n\n"
 );
+
 
 await typeText(
 "Memory check : OK\n"
 );
 
+
 await typeText(
 "Security check : OK\n\n"
 );
 
-await typeText(
-"Loading...\n\n"
-);
 
 await typeText(
-"DATA RESTORED"
+"C:\\EXPERIMENT\\FINAL> tree\n\n"
 );
 
+
+await typeText(
+"EXPERIMENT\n"+
+"│\n"+
+"├── SYSTEM\n"+
+"│   ├── core.exe\n"+
+"│   └── security.dat\n"+
+"│\n"+
+"├── SUBJECT\n"+
+"│   ├── subject001.dat\n"+
+"│   ├── subject002.dat\n"+
+"│   └── subject003.dat\n"+
+"│\n"+
+"└── hidden_data [LOCKED]\n\n"
+);
+
+
+await wait(1500);
+
+
+await typeText(
+"Downloading hidden_data...\n\n"
+);
+
+
+for(let i=10;i<=100;i+=10){
+
+
+let bar="";
+
+
+for(let j=0;j<i/10;j++){
+
+bar+="█";
+
+}
+
+
+for(let j=0;j<(10-i/10);j++){
+
+bar+="-";
+
+}
+
+
+
+screen.textContent +=
+"["+bar+"] "+i+"%\n";
+
+
+beep();
+
+
+await wait(400);
+
+
+}
+
+
+
+await typeText(
+"\nDATA RESTORED"
+);
 
 
 await blackout();
 
 
+// Part Bはここから続く
+  
+// =================
+// SCENE 2
+// =================
 
-// Scene 2
 
 glitch();
 
-screen.innerHTML=
+
+screen.innerHTML =
 "<span class='red'>FINAL TEST COMPLETE</span>";
 
 
@@ -240,49 +304,36 @@ await blackout();
 
 
 
-// Scene 3
+
+// =================
+// SCENE 3
+// =================
+
 
 await typeText(
-"YOU ARE QUALIFIED.\n\n"
+"YOU ARE QUALIFIED.\n\n"+
+"BUT REMEMBER...\n\n"+
+"YOU WERE NOT THE ONLY ONE BEING TESTED.\n\n"
 );
 
-await typeText(
-"BUT REMEMBER...\n\n"
-);
-
-await typeText(
-"YOU WERE NOT THE ONLY ONE BEING TESTED."
-);
 
 
 await blackout();
 
 
 
-// Scene 4
+
+// =================
+// SCENE 4
+// =================
+
 
 await typeText(
-"SUBJECT DATABASE\n\n"
-);
-
-
-await typeText(
-"SUBJECT 001 : PASSED\n\n"
-);
-
-await typeText(
-"SUBJECT 002 : UNKNOWN\n\n"
-);
-
-await typeText(
-"SUBJECT 003 : FAILED\n\n"
-);
-
-await typeText(
-"SUBJECT 004 : UNKNOWN\n\n"
-);
-
-await typeText(
+"SUBJECT DATABASE\n\n"+
+"SUBJECT 001 : PASSED\n\n"+
+"SUBJECT 002 : UNKNOWN\n\n"+
+"SUBJECT 003 : FAILED\n\n"+
+"SUBJECT 004 : UNKNOWN\n\n"+
 "SUBJECT 005 : LOCKED\n\n"
 );
 
@@ -292,12 +343,14 @@ let detail =
 document.createElement("button");
 
 
-detail.innerHTML="DETAIL";
+detail.textContent="DETAIL";
+
 
 
 detail.onclick=function(){
 
-screen.innerHTML=
+
+screen.textContent =
 "SUBJECT COUNT\n\n"+
 "TOTAL : 5\n\n"+
 "PASSED : 1\n\n"+
@@ -305,7 +358,9 @@ screen.innerHTML=
 "FAILED : 1\n\n"+
 "LOCKED : 1";
 
+
 glitch();
+
 
 };
 
@@ -318,37 +373,50 @@ screen.appendChild(detail);
 await wait(8000);
 
 
+
 await blackout();
 
 
+// Part Cはここから続く
+  
+// =================
+// SCENE 5
+// =================
 
-// Scene 5
 
-
-screen.innerHTML=
+screen.innerHTML =
 "<span class='red'>ALL PREVIOUS DATA WILL BE PERMANENTLY DELETED.</span>";
+
 
 
 await wait(2000);
 
 
 
-// countdown
+
+// COUNTDOWN
+
 
 for(let i=5;i>=1;i--){
 
-screen.innerHTML=
+
+screen.innerHTML =
 "<div style='text-align:center;font-size:100px;color:red;'>"+
 i+
 "</div>";
 
+
 beep();
+
 
 await wait(1000);
 
+
 clearScreen();
 
+
 await wait(300);
+
 
 }
 
@@ -358,15 +426,14 @@ glitch();
 
 
 
-// Scene 6
+
+// =================
+// SCENE 6
+// =================
 
 
 await typeText(
-"CONNECTION TERMINATED.\n\n"
-);
-
-
-await typeText(
+"CONNECTION TERMINATED.\n\n"+
 "SYSTEM OFFLINE."
 );
 
@@ -376,22 +443,23 @@ await wait(3000);
 
 
 
-document.body.style.transition="2s";
-
 screen.style.opacity="0";
-
 
 
 await wait(3000);
 
 
-// 存在しないページへ
+
+// 存在しないページへ移動
 
 location.href="final_error.html";
+
+
 
 }
 
 
+// START
 
 start();
 
