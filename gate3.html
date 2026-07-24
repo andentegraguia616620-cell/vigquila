@@ -1,87 +1,129 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <title>FINAL EXPERIMENT</title>
 
 <style>
 
 body{
-background:#000;
+background:black;
 color:#00ff00;
 font-family:monospace;
 height:100vh;
 margin:0;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
 overflow:hidden;
 }
 
 #screen{
+
 width:85%;
 max-width:900px;
 font-size:22px;
 white-space:pre-line;
+
 }
+
 
 .center{
 text-align:center;
 }
 
+
 .left{
 text-align:left;
 }
+
 
 .red{
 color:red;
 }
 
 
+.big{
+font-size:80px;
+}
+
+
 .shake{
-animation:shake .15s;
+
+animation:shake 0.15s;
+
 }
 
 
 @keyframes shake{
-0%{transform:translate(0);}
-25%{transform:translate(8px,-3px);}
-50%{transform:translate(-8px,3px);}
-75%{transform:translate(5px,2px);}
-100%{transform:translate(0);}
+
+0%{
+transform:translate(0);
+}
+
+25%{
+transform:translate(8px,-3px);
+}
+
+50%{
+transform:translate(-8px,3px);
+}
+
+75%{
+transform:translate(5px,2px);
+}
+
+100%{
+transform:translate(0);
+}
+
 }
 
 
+
 .static{
+
 position:fixed;
+
 inset:0;
+
 background:
+
 repeating-linear-gradient(
 0deg,
-rgba(255,255,255,.2) 0px,
+rgba(255,255,255,.25),
 transparent 2px,
 transparent 4px
 );
+
 pointer-events:none;
+
 }
 
 
 
 button{
+
 background:black;
 color:#00ff00;
 border:1px solid #00ff00;
 padding:10px;
 font-family:monospace;
+
 }
 
 
 </style>
+
 </head>
 
 
 <body>
 
+
 <div id="screen" class="center"></div>
+
 
 
 <script>
@@ -93,22 +135,30 @@ document.getElementById("screen");
 
 
 function wait(ms){
-return new Promise(r=>setTimeout(r,ms));
+
+return new Promise(resolve=>{
+
+setTimeout(resolve,ms);
+
+});
+
 }
 
 
 
 function clearScreen(){
+
 screen.textContent="";
+
 }
 
 
 
 async function typeText(text,speed=35){
 
-for(let c of text){
+for(let i=0;i<text.length;i++){
 
-screen.textContent+=c;
+screen.textContent += text[i];
 
 await wait(speed);
 
@@ -118,17 +168,21 @@ await wait(speed);
 
 
 
-async function terminalScroll(lines,max=10,speed=200){
+async function scrollTree(lines,max=10,speed=200){
 
 let buffer=[];
 
+
 for(let line of lines){
+
 
 buffer.push(line);
 
 
 if(buffer.length>max){
+
 buffer.shift();
+
 }
 
 
@@ -138,9 +192,11 @@ buffer.join("\n");
 
 await wait(speed);
 
+
 }
 
 }
+
 
 
 function beep(){
@@ -157,7 +213,12 @@ osc.connect(ctx.destination);
 
 osc.start();
 
-setTimeout(()=>osc.stop(),80);
+
+setTimeout(()=>{
+
+osc.stop();
+
+},80);
 
 }
 
@@ -170,21 +231,17 @@ clearScreen();
 return wait(1500);
 
 }
-
-
-// Part A-2へ続く
-  // =====================
-// PART A-2
+// =====================
+// PART A
 // BOOT / TREE / DOWNLOAD
 // =====================
 
 
-async function start(){
+async function partA(){
 
-
-// 起動ログ
 
 screen.className="center";
+
 
 
 await typeText(
@@ -197,9 +254,11 @@ await typeText(
 );
 
 
+
 await typeText(
 "Initializing system...\n\n"
 );
+
 
 
 await typeText(
@@ -207,25 +266,24 @@ await typeText(
 );
 
 
+
 await typeText(
 "Security check : OK\n\n"
 );
+
 
 
 await blackout();
 
 
 
-
-// =====================
 // TREE
-// =====================
-
 
 screen.className="left";
 
 
-await terminalScroll([
+
+await scrollTree([
 
 
 "C:\\EXPERIMENT\\FINAL> tree",
@@ -271,14 +329,10 @@ await wait(3000);
 
 
 
-// 黒画面
+// ACCESS
+
 
 await blackout();
-
-
-
-
-// hidden_dataアクセス
 
 
 screen.className="center";
@@ -296,16 +350,11 @@ await wait(1200);
 
 
 
-
 await blackout();
 
 
 
-
 // DOWNLOAD
-
-
-screen.className="center";
 
 
 await typeText(
@@ -371,20 +420,17 @@ await wait(2500);
 
 await blackout();
 
-
-
-// Part Bへ続く
-  // =====================
-// PART B
-// FINAL TEST / SUBJECT
+}
+// =====================
+// PART B + C
+// TEST / SUBJECT / END
 // =====================
 
 
+function glitch(){
 
-function randomGlitch(){
 
-
-if(Math.random() < 0.3){
+if(Math.random()<0.35){
 
 
 let noise=document.createElement("div");
@@ -396,12 +442,39 @@ noise.className="static";
 document.body.appendChild(noise);
 
 
-
 document.body.classList.add("shake");
 
 
 
-glitchBeep();
+let ctx=new AudioContext();
+
+
+for(let i=0;i<6;i++){
+
+
+let osc=ctx.createOscillator();
+
+
+osc.type="square";
+
+osc.frequency.value=
+Math.random()*700+100;
+
+
+osc.connect(ctx.destination);
+
+
+osc.start();
+
+
+setTimeout(()=>{
+
+osc.stop();
+
+},80);
+
+
+}
 
 
 
@@ -409,6 +482,7 @@ setTimeout(()=>{
 
 
 noise.remove();
+
 
 document.body.classList.remove("shake");
 
@@ -424,59 +498,13 @@ document.body.classList.remove("shake");
 
 
 
-function glitchBeep(){
 
+async function partB(){
 
-let ctx=new AudioContext();
-
-
-
-for(let i=0;i<5;i++){
-
-
-let osc=ctx.createOscillator();
-
-
-
-osc.type="square";
-
-
-osc.frequency.value=
-Math.random()*700+100;
-
-
-
-osc.connect(ctx.destination);
-
-
-osc.start();
-
-
-
-setTimeout(()=>{
-
-osc.stop();
-
-},80);
-
-
-
-}
-
-
-}
-
-
-
-
-async function sceneB(){
-
-
-
-// FINAL TEST
 
 
 screen.className="center";
+
 
 
 screen.innerHTML=
@@ -484,21 +512,15 @@ screen.innerHTML=
 
 
 
-randomGlitch();
+glitch();
 
 
 await wait(3000);
 
 
 
-
-// QUALIFIED
-
-
 await blackout();
 
-
-screen.className="center";
 
 
 await typeText(
@@ -511,21 +533,15 @@ await typeText(
 
 
 
-randomGlitch();
+glitch();
 
 
-await wait(3500);
+await wait(3000);
 
-
-
-
-// SUBJECT
 
 
 await blackout();
 
-
-screen.className="center";
 
 
 await typeText(
@@ -541,72 +557,27 @@ await typeText(
 
 
 
-randomGlitch();
+glitch();
 
 
-
-await wait(2000);
-
+await wait(3000);
 
 
-// DETAIL BUTTON
-
-
-let btn=document.createElement("button");
-
-
-btn.textContent="DETAIL";
-
-
-btn.onclick=function(){
-
-
-screen.className="center";
-
-
-screen.textContent=
-
-"SUBJECT COUNT\n\n"+
-"TOTAL : 5\n\n"+
-"PASSED : 1\n\n"+
-"UNKNOWN : 2\n\n"+
-"FAILED : 1\n\n"+
-"LOCKED : 1";
-
-
-randomGlitch();
-
-
-};
-
-
-
-screen.appendChild(btn);
-
-
-
-await wait(8000);
-
-
-// Part Cへ続く
 
 }
-  // =====================
-// PART C
-// DELETE / COUNTDOWN / END
-// =====================
 
 
-async function sceneC(){
 
+async function partC(){
 
-// 削除警告
 
 
 await blackout();
 
 
+
 screen.className="center";
+
 
 
 screen.innerHTML=
@@ -614,32 +585,23 @@ screen.innerHTML=
 
 
 
-randomGlitch();
-
+glitch();
 
 
 await wait(4000);
 
 
 
-
-// カウントダウン
-
-
 await blackout();
 
-
-
-screen.className="center";
 
 
 for(let i=5;i>=1;i--){
 
 
 screen.innerHTML=
-"<span class='red' style='font-size:80px;'>"
-+i+
-"</span>";
+
+"<span class='red big'>"+i+"</span>";
 
 
 beep();
@@ -652,14 +614,8 @@ await wait(1000);
 
 
 
-// 終了
-
-
 await blackout();
 
-
-
-screen.className="center";
 
 
 await typeText(
@@ -675,14 +631,8 @@ await wait(3000);
 
 
 
-// 最後の暗転
-
-
 await blackout();
 
-
-
-// 存在しないページへ移動
 
 
 window.location.href="final_error.html";
@@ -692,25 +642,32 @@ window.location.href="final_error.html";
 
 
 
-
 // =====================
-// START FLOW
+// START
 // =====================
 
 
 async function run(){
 
 
-await start();
+await partA();
 
 
-await sceneB();
+await partB();
 
 
-await sceneC();
+await partC();
 
 
 }
 
 
 run();
+
+
+
+</script>
+
+</body>
+
+</html>
