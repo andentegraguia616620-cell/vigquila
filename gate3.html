@@ -1,43 +1,36 @@
-
 <!DOCTYPE html>
 <html>
-
 <head>
-
 <title>FINAL EXPERIMENT</title>
 
 <style>
 
 body{
-background:black;
+background:#000;
 color:#00ff00;
 font-family:monospace;
 height:100vh;
 margin:0;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
 overflow:hidden;
 }
 
-
 #screen{
-width:80%;
+width:85%;
 max-width:900px;
 font-size:22px;
 white-space:pre-line;
 }
 
-
-.left{
-text-align:left;
-}
-
-
 .center{
 text-align:center;
 }
 
+.left{
+text-align:left;
+}
 
 .red{
 color:red;
@@ -45,74 +38,50 @@ color:red;
 
 
 .shake{
-animation:shake 0.15s;
+animation:shake .15s;
 }
 
 
 @keyframes shake{
-
-0%{transform:translate(0,0);}
+0%{transform:translate(0);}
 25%{transform:translate(8px,-3px);}
 50%{transform:translate(-8px,3px);}
 75%{transform:translate(5px,2px);}
-100%{transform:translate(0,0);}
-
-}
-
-
-.glitch-bg::before{
-
-content:"";
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-
-background:
-linear-gradient(
-90deg,
-transparent,
-rgba(0,255,0,0.15),
-transparent
-);
-
-animation:glitchMove 0.1s infinite;
-pointer-events:none;
-
-}
-
-
-@keyframes glitchMove{
-
-0%{transform:translate(0);}
-25%{transform:translate(-10px,3px);}
-50%{transform:translate(8px,-2px);}
-75%{transform:translate(-5px,5px);}
 100%{transform:translate(0);}
-
 }
+
+
+.static{
+position:fixed;
+inset:0;
+background:
+repeating-linear-gradient(
+0deg,
+rgba(255,255,255,.2) 0px,
+transparent 2px,
+transparent 4px
+);
+pointer-events:none;
+}
+
 
 
 button{
-
 background:black;
 color:#00ff00;
 border:1px solid #00ff00;
 padding:10px;
 font-family:monospace;
-
 }
 
-</style>
 
+</style>
 </head>
 
 
 <body>
 
-
-<div id="screen" class="left"></div>
+<div id="screen" class="center"></div>
 
 
 <script>
@@ -124,28 +93,22 @@ document.getElementById("screen");
 
 
 function wait(ms){
-
-return new Promise(resolve=>{
-setTimeout(resolve,ms);
-});
-
+return new Promise(r=>setTimeout(r,ms));
 }
 
 
 
 function clearScreen(){
-
 screen.textContent="";
-
 }
 
 
 
 async function typeText(text,speed=35){
 
-for(let i=0;i<text.length;i++){
+for(let c of text){
 
-screen.textContent += text[i];
+screen.textContent+=c;
 
 await wait(speed);
 
@@ -155,18 +118,29 @@ await wait(speed);
 
 
 
-async function typeLines(lines,speed=120){
+async function terminalScroll(lines,max=10,speed=200){
+
+let buffer=[];
 
 for(let line of lines){
 
-screen.textContent += line+"\n";
+buffer.push(line);
+
+
+if(buffer.length>max){
+buffer.shift();
+}
+
+
+screen.textContent=
+buffer.join("\n");
+
 
 await wait(speed);
 
 }
 
 }
-
 
 
 function beep(){
@@ -183,94 +157,7 @@ osc.connect(ctx.destination);
 
 osc.start();
 
-
-setTimeout(()=>{
-
-osc.stop();
-
-},80);
-
-}
-
-
-
-let audioCtx;
-
-
-function glitchSound(){
-
-if(!audioCtx){
-
-audioCtx=new AudioContext();
-
-}
-
-
-let count=0;
-
-
-let timer=setInterval(()=>{
-
-
-let osc=audioCtx.createOscillator();
-
-osc.type="square";
-
-osc.frequency.value=Math.random()*500+100;
-
-osc.connect(audioCtx.destination);
-
-osc.start();
-
-
-setTimeout(()=>{
-
-osc.stop();
-
-},60);
-
-
-count++;
-
-
-if(count>=12){
-
-clearInterval(timer);
-
-}
-
-
-},80);
-
-}
-
-
-
-function backgroundGlitch(){
-
-document.body.classList.add("glitch-bg");
-
-
-setTimeout(()=>{
-
-document.body.classList.remove("glitch-bg");
-
-},500);
-
-}
-
-
-
-function shake(){
-
-document.body.classList.add("shake");
-
-
-setTimeout(()=>{
-
-document.body.classList.remove("shake");
-
-},150);
+setTimeout(()=>osc.stop(),80);
 
 }
 
@@ -278,28 +165,31 @@ document.body.classList.remove("shake");
 
 function blackout(){
 
-return new Promise(resolve=>{
-
 clearScreen();
 
-setTimeout(resolve,1500);
-
-});
+return wait(1500);
 
 }
 
+
+// Part A-2へ続く
+  // =====================
+// PART A-2
+// BOOT / TREE / DOWNLOAD
+// =====================
 
 
 async function start(){
 
 
-screen.className="left";
+// 起動ログ
+
+screen.className="center";
 
 
-// ここからPart A-2へ続く
-  // =================
-// SCENE 1
-// =================
+await typeText(
+"MS-DOS TERMINAL\n\n"
+);
 
 
 await typeText(
@@ -313,7 +203,7 @@ await typeText(
 
 
 await typeText(
-"Memory check : OK\n"
+"Memory check : OK\n\n"
 );
 
 
@@ -322,12 +212,21 @@ await typeText(
 );
 
 
+await blackout();
+
+
+
+
+// =====================
+// TREE
+// =====================
+
 
 screen.className="left";
 
 
+await terminalScroll([
 
-await typeLines([
 
 "C:\\EXPERIMENT\\FINAL> tree",
 
@@ -355,10 +254,16 @@ await typeLines([
 
 "│",
 
+"├── ARCHIVE",
+
+"│   └── old_data.bin",
+
+"│",
+
 "└── hidden_data [LOCKED]"
 
 
-],200);
+],10,250);
 
 
 
@@ -368,17 +273,21 @@ await wait(3000);
 
 // 黒画面
 
-clearScreen();
+await blackout();
 
-await wait(2000);
 
+
+
+// hidden_dataアクセス
 
 
 screen.className="center";
 
 
 await typeText(
+
 "C:\\EXPERIMENT\\FINAL> access hidden_data\n\n"
+
 );
 
 
@@ -387,24 +296,25 @@ await wait(1200);
 
 
 
-// 黒画面
 
-clearScreen();
+await blackout();
 
-await wait(1500);
 
+
+
+// DOWNLOAD
 
 
 screen.className="center";
 
 
 await typeText(
+
 "Downloading hidden_data...\n\n"
+
 );
 
 
-
-// ダウンロードバー
 
 for(let i=10;i<=100;i+=10){
 
@@ -428,7 +338,9 @@ bar+="-";
 
 
 screen.textContent +=
+
 "["+bar+"] "+i+"%\n";
+
 
 
 beep();
@@ -441,104 +353,219 @@ await wait(400);
 
 
 
+await wait(1000);
+
+
+
 await typeText(
+
 "\nDATA RESTORED"
+
 );
+
+
+
+await wait(2500);
 
 
 
 await blackout();
 
 
+
 // Part Bへ続く
-  
-// =================
-// SCENE 2
-// =================
+  // =====================
+// PART B
+// FINAL TEST / SUBJECT
+// =====================
+
+
+
+function randomGlitch(){
+
+
+if(Math.random() < 0.3){
+
+
+let noise=document.createElement("div");
+
+
+noise.className="static";
+
+
+document.body.appendChild(noise);
+
+
+
+document.body.classList.add("shake");
+
+
+
+glitchBeep();
+
+
+
+setTimeout(()=>{
+
+
+noise.remove();
+
+document.body.classList.remove("shake");
+
+
+},500);
+
+
+
+}
+
+
+}
+
+
+
+function glitchBeep(){
+
+
+let ctx=new AudioContext();
+
+
+
+for(let i=0;i<5;i++){
+
+
+let osc=ctx.createOscillator();
+
+
+
+osc.type="square";
+
+
+osc.frequency.value=
+Math.random()*700+100;
+
+
+
+osc.connect(ctx.destination);
+
+
+osc.start();
+
+
+
+setTimeout(()=>{
+
+osc.stop();
+
+},80);
+
+
+
+}
+
+
+}
+
+
+
+
+async function sceneB(){
+
+
+
+// FINAL TEST
 
 
 screen.className="center";
 
 
-shake();
-
-backgroundGlitch();
-
-glitchSound();
-
-
-screen.innerHTML =
+screen.innerHTML=
 "<span class='red'>FINAL TEST COMPLETE</span>";
 
 
 
-await wait(4000);
+randomGlitch();
 
+
+await wait(3000);
+
+
+
+
+// QUALIFIED
 
 
 await blackout();
-
-
-
-
-
-// =================
-// SCENE 3
-// =================
 
 
 screen.className="center";
 
 
 await typeText(
+
 "YOU ARE QUALIFIED.\n\n"+
 "BUT REMEMBER...\n\n"+
-"YOU WERE NOT THE ONLY ONE BEING TESTED.\n\n"
+"YOU WERE NOT THE ONLY ONE BEING TESTED."
+
 );
 
+
+
+randomGlitch();
+
+
+await wait(3500);
+
+
+
+
+// SUBJECT
 
 
 await blackout();
 
 
-
-
-
-// =================
-// SCENE 4
-// =================
-
-
-screen.className="left";
+screen.className="center";
 
 
 await typeText(
+
 "SUBJECT DATABASE\n\n"+
 "SUBJECT 001 : PASSED\n\n"+
 "SUBJECT 002 : UNKNOWN\n\n"+
 "SUBJECT 003 : FAILED\n\n"+
 "SUBJECT 004 : UNKNOWN\n\n"+
-"SUBJECT 005 : LOCKED\n\n"
+"SUBJECT 005 : LOCKED"
+
 );
 
 
 
-
-let detail =
-document.createElement("button");
-
-
-detail.textContent="DETAIL";
+randomGlitch();
 
 
 
-detail.onclick=function(){
+await wait(2000);
+
+
+
+// DETAIL BUTTON
+
+
+let btn=document.createElement("button");
+
+
+btn.textContent="DETAIL";
+
+
+btn.onclick=function(){
 
 
 screen.className="center";
 
 
-screen.textContent =
+screen.textContent=
+
 "SUBJECT COUNT\n\n"+
 "TOTAL : 5\n\n"+
 "PASSED : 1\n\n"+
@@ -547,65 +574,72 @@ screen.textContent =
 "LOCKED : 1";
 
 
-shake();
-
-backgroundGlitch();
-
-glitchSound();
+randomGlitch();
 
 
 };
 
 
 
-screen.appendChild(detail);
+screen.appendChild(btn);
 
 
 
 await wait(8000);
 
 
+// Part Cへ続く
+
+}
+  // =====================
+// PART C
+// DELETE / COUNTDOWN / END
+// =====================
+
+
+async function sceneC(){
+
+
+// 削除警告
+
 
 await blackout();
-
-
-// Part Cへ続く
-  
-// =================
-// SCENE 5
-// =================
 
 
 screen.className="center";
 
 
-screen.innerHTML =
+screen.innerHTML=
 "<span class='red'>ALL PREVIOUS DATA WILL BE PERMANENTLY DELETED.</span>";
 
 
 
-await wait(2500);
+randomGlitch();
+
+
+
+await wait(4000);
 
 
 
 
+// カウントダウン
 
-// =================
-// COUNTDOWN
-// =================
+
+await blackout();
+
+
+
+screen.className="center";
 
 
 for(let i=5;i>=1;i--){
 
 
-screen.className="center";
-
-
-screen.innerHTML =
-"<div class='red' style='font-size:60px;'>"+
-i+
-"</div>";
-
+screen.innerHTML=
+"<span class='red' style='font-size:80px;'>"
++i+
+"</span>";
 
 
 beep();
@@ -614,39 +648,25 @@ beep();
 await wait(1000);
 
 
-
-clearScreen();
-
-
-await wait(300);
-
-
 }
 
 
 
-shake();
-
-backgroundGlitch();
-
-glitchSound();
+// 終了
 
 
+await blackout();
 
-
-
-
-// =================
-// SCENE 6
-// =================
 
 
 screen.className="center";
 
 
 await typeText(
+
 "CONNECTION TERMINATED.\n\n"+
 "SYSTEM OFFLINE."
+
 );
 
 
@@ -655,39 +675,42 @@ await wait(3000);
 
 
 
-
-// 暗転
-
-
-screen.style.transition="2s";
-
-screen.style.opacity="0";
+// 最後の暗転
 
 
-
-await wait(3000);
+await blackout();
 
 
 
 // 存在しないページへ移動
 
-location.href="final_error.html";
 
+window.location.href="final_error.html";
 
 
 }
 
 
 
-// START
 
-start();
-
-
-
-</script>
+// =====================
+// START FLOW
+// =====================
 
 
-</body>
+async function run(){
 
-</html>
+
+await start();
+
+
+await sceneB();
+
+
+await sceneC();
+
+
+}
+
+
+run();
